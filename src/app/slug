@@ -1,0 +1,35 @@
+// src/app/projects/[slug]/page.tsx
+import { notFound } from "next/navigation";
+import { projects } from "../page";
+
+type Props = { params: { slug: string } };
+
+export function generateStaticParams() {
+  return projects.map((p) => ({ slug: p.slug }));
+}
+
+export default function ProjectDetail({ params }: Props) {
+  const project = projects.find((p) => p.slug === params.slug);
+  if (!project) return notFound();
+
+  return (
+    <main className="mx-auto max-w-3xl px-6 py-16">
+      <h1 className="text-2xl font-semibold">{project.title}</h1>
+      <p className="text-zinc-600 dark:text-zinc-400 mt-2">
+        {project.summary} — This page is generated from the URL (dynamic route).
+      </p>
+
+      <section className="mt-6 prose dark:prose-invert">
+        <p>
+          Replace this paragraph with screenshots, goals, constraints, process, and outcomes.
+          You can also embed images from <code>/public</code>.
+        </p>
+        <ul>
+          <li>Problem → approach</li>
+          <li>Key UX decisions</li>
+          <li>Impact / next steps</li>
+        </ul>
+      </section>
+    </main>
+  );
+}
